@@ -1,0 +1,38 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'com.google.protobuf' version '0.8.14'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'io.grpc', name: 'grpc-netty', version: '1.50.2'
+	implementation group: 'io.grpc', name: 'grpc-protobuf', version: '1.50.1'
+	implementation group: 'io.grpc', name: 'grpc-stub', version: '1.50.1'
+	implementation group: 'net.devh', name: 'grpc-client-spring-boot-starter', version: '2.13.1.RELEASE'
+}
+
+protobuf {
+	generatedFilesBaseDir = "$projectDir/src/main/java/generated"
+	protoc {
+		artifact = 'com.google.protobuf:protoc:3.10.1'
+	}
+
+	plugins {
+		grpc {
+			artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+		}
+	}
+
+	generateProtoTasks {
+		all()*.plugins {
+			grpc {}
+		}
+	}
+}
